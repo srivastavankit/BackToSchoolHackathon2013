@@ -5,28 +5,24 @@ def print_transaction(money, _name, _owned, _prices):
     
     for i in range(len(_name)):        
         owned, prices = _owned[i], _prices[i]
-        avg = avg_list(prices)
-    
-        if (avg < prices[-1]):
-            
-            decision.append((i, owned, prices[-1] - avg)) #0 - buy, 1 - sell
-            
-        elif (avg > prices[-1] and owned > 0):
-            decision.append((i, owned, prices[-1] - avg))
-            
-    decision_sorted = sorted(decision, key=lambda tup: tup[2], reverse=True)
+        avg = avg_list(prices[:-1])
+        
+        margin = prices[-1] - avg
+        decision.append((i, owned, margin))
+        
+    decision_sorted = sorted(decision, key=lambda tup: tup[2])
     
     
     for i in decision_sorted:
         index, owned, margin = i
-        if(margin > 0 and money > 0):
+        if((-1)*margin > 0 and money > 0):
             last_price = _prices[index][-1]            
             units = int(money/last_price)                
             if units > 0: 
                 #print "appending"
                 money -= units * last_price
                 output.append((_name[index], "BUY", units))            
-        elif(margin < 0):
+        elif(margin > 0 and owned > 0):
             #print "appending"
             output.append((_name[index], "SELL", owned))
     
