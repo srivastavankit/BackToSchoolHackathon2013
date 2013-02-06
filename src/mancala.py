@@ -18,8 +18,9 @@ Created on Feb 2, 2013
 
 def checkFreeTurn(board):
     for i in range(len(board)):
-        if i == (len(board) - i): return i
-        else: return -1
+        if board[i] == (len(board) - i):
+            return i + 1
+    return -1
         
 def findRightmostSlot(board):
     for i in range(len(board)):
@@ -29,14 +30,14 @@ def findRightmostSlot(board):
 
 def capture(board, board_opp):
     a = []
-    for i in range(len(board)):
+    for i in range(len(board)):        
         if board[i] == 0: a.append(i)
     pos=nos=0   #position of slot with 0, nos refers to number of marbles in the opposite slot.
     for i in a:
         for index in range(i):
             if board[index] == (i - index):
-                if board_opp[len(board_opp)-1-i]:
-                    pos, nos = i, board_opp[len(board_opp)-1-i]
+                if board_opp[len(board_opp)-1-i] > nos:
+                    pos, nos = index+1, board_opp[len(board_opp)-1-i]
     if nos != 0: return pos
     else: return -1
                      
